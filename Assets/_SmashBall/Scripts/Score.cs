@@ -1,63 +1,58 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Score : MonoBehaviour
 {
-    public static Score instance;
+    public static Score _instance;
 
-    public int score;
-    public Text scoreTxt;
+    private int _score;
+
+    [SerializeField] TextMeshProUGUI _scoreTxt;
     private void Awake()
     {
-        makeSingleton();
-        scoreTxt = GameObject.Find("scoreTxt").GetComponent<Text>();
+        MakeSingleton();
 
     }
 
-    private void makeSingleton()
+    private void MakeSingleton()
     {
-        if (instance != null)
+        if (_instance != null)
         {
             Destroy(gameObject);
         }
         else
         {
-            instance = this;
+            _instance = this;
             DontDestroyOnLoad(this);
         }
     }
 
     void Start()
     {
-        addScore(0);
+        AddScore(0);
     }
 
     
-    void Update()
-    {
-        if (scoreTxt == null)
-        {
-            scoreTxt = GameObject.Find("scoreTxt").GetComponent<Text>();
-        }
-    }
+    
 
-    public void addScore(int value)
+    public void AddScore(int value)
     {
-        score += value;
-        if(score > PlayerPrefs.GetInt(" HighScore",0))
+        _score += value;
+        if(_score > PlayerPrefs.GetInt(" HighScore",0))
         {
-            PlayerPrefs.SetInt("HighScore", score);
+            PlayerPrefs.SetInt("HighScore", _score);
         }
 
-        scoreTxt.text = score.ToString();
-        Debug.Log("Score --> " + score);
+        _scoreTxt.text = _score.ToString();
+        Debug.Log("Score --> " + _score);
     }
 
-    public void removeScore()
+    public void RemoveScore()
     {
-        score = 0;
+        _score = 0;
     }
 }

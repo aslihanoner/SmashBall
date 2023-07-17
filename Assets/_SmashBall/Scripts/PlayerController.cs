@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -129,7 +130,7 @@ public class PlayerController : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0))
             {
-                FindObjectOfType<LevelRotation>().nextLevel();
+                FindObjectOfType<LevelRotation>().NextLevel();
             }
         }
 
@@ -139,11 +140,11 @@ public class PlayerController : MonoBehaviour
     {
         if (invincible)
         {
-            Score.instance.addScore(1);
+            Score._instance.AddScore(1);
         }
         else
         {
-            Score.instance.addScore(2);
+            Score._instance.AddScore(2);
         }
         
     }
@@ -199,7 +200,7 @@ public class PlayerController : MonoBehaviour
                     GameOverUI.SetActive(true);
                     playerState = PlayerState.Finish;
                     gameObject.GetComponent<Rigidbody>().isKinematic = true;
-                    Score.instance.removeScore();
+                    Score._instance.RemoveScore();
                     Sound.instance.playSoundFX(death, volume: 0.5f);
                     
                 }
@@ -215,7 +216,7 @@ public class PlayerController : MonoBehaviour
             playerState = PlayerState.Finish;
             Sound.instance.playSoundFX(win, volume: 0.5f);
             FinishUI.SetActive(true);
-            FinishUI.transform.GetChild(0).GetComponent<Text>().text = "Level" + PlayerPrefs.GetInt("Level");
+            FinishUI.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Level" + PlayerPrefs.GetInt("Level");
         }
 
     }

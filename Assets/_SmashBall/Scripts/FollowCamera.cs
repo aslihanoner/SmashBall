@@ -74,7 +74,7 @@ public class FollowCamera : MonoBehaviour
 
 
 
-private void Awake()
+    private void Awake()
     {
         player = FindObjectOfType<PlayerController>().transform;
         LevelRotation.OnWinInstantiated += LevelRotation_OnWinInstantiated;
@@ -85,8 +85,5 @@ private void Awake()
         win = obj.transform;
     }
 
-    void Start()
-    {
-        
-    }
+    
 }
