@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class FollowCamera : MonoBehaviour
@@ -23,11 +22,6 @@ public class FollowCamera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(win == null)
-        {
-            win = GameObject.Find("win(Clone)").GetComponent<Transform>();
-
-        }
 
         if(transform.position.y > player.position.y && transform.position.y > win.position.y + cameraOffset)
         {
