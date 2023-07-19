@@ -5,32 +5,22 @@ using UnityEngine.UI;
 
 public class GameUI : MonoBehaviour
 {
-    public Image levelSlider;
-    public Image currentLevelImage;
-    public Image nextLevelImage;
-
-    public Material playerMaterial;
-
-
+    public Image LevelSlider;
+    public Image CurrentLevelImage;
+    public Image NextLevelImage;
+    public Material PlayerMaterial;
     void Start()
     {
-        playerMaterial = FindObjectOfType<PlayerController>().transform.GetChild(0).GetComponent<MeshRenderer>().material;
+        PlayerMaterial = FindObjectOfType<PlayerController>().transform.GetChild(0).GetComponent<MeshRenderer>().material;
 
-        levelSlider.transform.GetComponent<Image>().color = playerMaterial.color + Color.gray;
-        levelSlider.color = playerMaterial.color;
-        currentLevelImage.color = playerMaterial.color;
-        nextLevelImage.color = playerMaterial.color;
-
+        LevelSlider.transform.GetComponent<Image>().color = PlayerMaterial.color + Color.gray;
+        LevelSlider.color = PlayerMaterial.color;
+        CurrentLevelImage.color = PlayerMaterial.color;
+        NextLevelImage.color = PlayerMaterial.color;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void LevelSliderFill(float fillAmount)
     {
-        
-    }
-
-    public void levelSliderFill(float fillAmount)
-    {
-        levelSlider.fillAmount = fillAmount;
+        LevelSlider.fillAmount = fillAmount;
     }
 }

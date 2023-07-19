@@ -81,8 +81,6 @@ public class LevelRotation : MonoBehaviour
 
             }
 
-
-
             _obstacle.transform.parent = FindObjectOfType<RotateControl>().transform;
 
         }
@@ -128,9 +126,5 @@ public class LevelRotation : MonoBehaviour
         PlayerPrefs.SetInt("level", PlayerPrefs.GetInt("level") + 1);
         SceneManager.LoadScene(0);
     }
-
-
-
-
 
 }

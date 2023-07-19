@@ -6,227 +6,132 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
-    public Rigidbody rb;
-    bool hit;
-
-    float currentTime;
-
-    bool invincible;
-
-    [SerializeField]
-    AudioClip win, death, invictibledestroy, destroy, bounce;
-
-    public int currentObstacleNum;
-    public int totalObstacleNum;
-
-    public Image InvictableSlider;
-    public GameObject InvictableObject;
-
+    public Rigidbody Rb;
+    bool _hit;
+    float _currentTime;
+    bool _invincible;
+    private Sound _soundManager;
+    [SerializeField] AudioClip win, death, invincibleDestroy, destroy, bounce;
+    public int CurrentObstacleNum;
+    public int TotalObstacleNum;
+    public Image InvincibleSlider;
+    public GameObject InvincibleObject;
     public GameObject GameOverUI;
     public GameObject FinishUI;
+    public delegate void CameraShakeEventHandler(float duration, float magnitude);
+    public static event CameraShakeEventHandler CameraShakeEvent;
 
-    public enum PlayerState
-    {
-        Prepare,
-        Playing,
-        Died,
-        Finish
-    }
-    [HideInInspector]
-
-    public PlayerState playerState = PlayerState.Prepare;
-
+    public enum PlayerState{Prepare, Playing, Died, Finish}
+    [HideInInspector] public PlayerState playerState = PlayerState.Prepare;
 
     void Start()
     {
-        totalObstacleNum = FindObjectsOfType<ObstacleNewController>().Length;
-
-
-
+        TotalObstacleNum = FindObjectsOfType<ObstacleNewController>().Length;
+        _soundManager = FindObjectOfType<Sound>();
     }
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody>();
-        currentObstacleNum = 0;
-
+        Rb = GetComponent<Rigidbody>();
+        CurrentObstacleNum = 0;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (playerState == PlayerState.Playing)
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                hit = true;
-            }
+            _hit = Input.GetMouseButton(0);
 
-            if (Input.GetMouseButtonUp(0))
-            {
-                hit = false;
-            }
-
-
-            if (invincible)
-            {
-                currentTime -= Time.deltaTime * .4f;
-            }
+            if (_invincible) _currentTime -= Time.deltaTime * 0.4f;
             else
+                _currentTime += _hit ? Time.deltaTime * 0.8f : -Time.deltaTime * 0.5f;
+
+            _currentTime = Mathf.Clamp01(_currentTime);
+            InvincibleObject.SetActive(_currentTime >= 0.15f || InvincibleSlider.color == Color.red);
+
+            if (_currentTime >= 1)
             {
-                if (hit)
-                {
-                    currentTime += Time.deltaTime * 0.8f;
-                }
-                else
-                {
-                    currentTime -= Time.deltaTime * 0.5f;
-                }
+                _currentTime = 1;
+                _invincible = true;
+                InvincibleSlider.color = Color.red;
+            }
+            else if (_currentTime <= 0)
+            {
+                _currentTime = 0;
+                _invincible = false;
+                InvincibleSlider.color = Color.white;
             }
 
-
-            if(currentTime>=0.15f || InvictableSlider.color == Color.red)
-            {
-                InvictableObject.SetActive(true);
-            }
-            else
-            {
-                InvictableObject.SetActive(false);
-            }
-
-
-            if (currentTime >= 1)
-            {
-                currentTime = 1;
-                invincible = true;
-                Debug.Log("invincible");
-                InvictableSlider.color = Color.red;
-
-
-            }
-            else if (currentTime <= 0)
-            {
-                currentTime = 0;
-                invincible = false;
-                Debug.Log("*******");
-                InvictableSlider.color = Color.white;
-            }
-
-            if (InvictableObject.activeInHierarchy)
-            {
-                InvictableSlider.fillAmount = currentTime / 1;
-            }
+            InvincibleSlider.fillAmount = _currentTime;
         }
 
-        if (playerState == PlayerState.Prepare)
-        {
-            if (Input.GetMouseButton(0))
-            {
-                playerState = PlayerState.Playing;
-            }
-        }
+        if (playerState == PlayerState.Prepare && Input.GetMouseButton(0))
+            playerState = PlayerState.Playing;
 
-        if (playerState == PlayerState.Finish)
-        {
-            if (Input.GetMouseButtonDown(0))
-            {
-                FindObjectOfType<LevelRotation>().NextLevel();
-            }
-        }
-
-
+        if (playerState == PlayerState.Finish && Input.GetMouseButtonDown(0))
+            FindObjectOfType<LevelRotation>().NextLevel();
     }
-    public void shatterObstacle()
+    public void ShatterObstacle()
     {
-        if (invincible)
-        {
-            Score._instance.AddScore(1);
-        }
-        else
-        {
-            Score._instance.AddScore(2);
-        }
-        
+        Score._instance.AddScore(_invincible ? 1 : 2);
+        CameraShakeEvent?.Invoke(0.2f, 0.1f);
+        _soundManager = FindObjectOfType<Sound>();
     }
 
     private void FixedUpdate()
     {
-        if (playerState == PlayerState.Playing)
+        if (playerState == PlayerState.Playing && _hit)
         {
-            if (hit)
-            {
-                rb.velocity = new Vector3(0, -100 * Time.fixedDeltaTime * 7, 0);
+            if (Input.GetMouseButton(0)) 
+            { 
+                Rb.velocity = new Vector3(0, -100 * Time.fixedDeltaTime * 7, 0);
             }
+           
         }
-
+            
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (!hit)
+        Rb.velocity = _hit ? Vector3.zero : new Vector3(0, 50 * Time.deltaTime * 5, 0);
+
+        if (!_hit || _invincible)
         {
-            rb.velocity = new Vector3(0, 50 * Time.deltaTime * 5, 0);
-        }
-        else
-        {
-
-            if (invincible)
+            if (collision.gameObject.tag == "enemy" || collision.gameObject.tag == "plane")
             {
-                if (collision.gameObject.tag == "enemy" && collision.gameObject.tag == "plane")
-                {
-                    //Destroy(collision.transform.parent.gameObject);
-                    collision.transform.parent.GetComponent<ObstacleNewController>().ShatterAnimationAllObstacles();
-                    shatterObstacle();
-                    Sound.instance.playSoundFX(invictibledestroy, volume: 0.5f);
-                    currentObstacleNum++;
-
-                }
-                
+                collision.transform.parent.GetComponent<ObstacleNewController>().ShatterAnimationAllObstacles();
+                ShatterObstacle();
+                Sound.Instance.PlaySoundFX(_invincible ? invincibleDestroy : destroy, volume: 0.5f);
+                CurrentObstacleNum++;
             }
-            else
+            else if (collision.gameObject.tag == "plane")
             {
-                if (collision.gameObject.tag == "enemy")
-                {
-                    //Destroy(collision.transform.parent.gameObject);
-                    collision.transform.parent.GetComponent<ObstacleNewController>().ShatterAnimationAllObstacles();
-                    shatterObstacle();
-                    Sound.instance.playSoundFX(destroy, volume: 0.5f);
-                    currentObstacleNum++;
-
-                }
-                else if (collision.gameObject.tag == "plane")
-                {
-                    Debug.Log(message: "GameOver");
-                    GameOverUI.SetActive(true);
-                    playerState = PlayerState.Finish;
-                    gameObject.GetComponent<Rigidbody>().isKinematic = true;
-                    Score._instance.RemoveScore();
-                    Sound.instance.playSoundFX(death, volume: 0.5f);
-                    
-                }
+                Debug.Log("GameOver");
+                GameOverUI.SetActive(true);
+                playerState = PlayerState.Finish;
+                gameObject.GetComponent<Rigidbody>().isKinematic = true;
+                Score._instance.RemoveScore();
+                Sound.Instance.PlaySoundFX(death, volume: 0.5f);
             }
-
         }
 
-        FindObjectOfType<GameUI>().levelSliderFill(currentObstacleNum / (float)totalObstacleNum);
+        FindObjectOfType<GameUI>().LevelSliderFill(CurrentObstacleNum / (float)TotalObstacleNum);
 
-
-        if(collision.gameObject.tag=="Finish" && playerState == PlayerState.Playing)
+        if (collision.gameObject.tag == "Finish" && playerState == PlayerState.Playing)
         {
             playerState = PlayerState.Finish;
-            Sound.instance.playSoundFX(win, volume: 0.5f);
+            Sound.Instance.PlaySoundFX(win, volume: 0.5f);
             FinishUI.SetActive(true);
             FinishUI.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Level" + PlayerPrefs.GetInt("Level");
         }
-
     }
 
     private void OnCollisionStay(Collision collision)
     {
-        if (!hit || collision.gameObject.tag == "Finish")
+        if (!_hit || collision.gameObject.tag == "Finish")
         {
-            rb.velocity = new Vector3(0, 50 * Time.deltaTime * 5, 0);
-            Sound.instance.playSoundFX(bounce, volume: 0.5f);
+            Rb.velocity = new Vector3(0, 50 * Time.deltaTime * 5, 0);
+            Sound.Instance.PlaySoundFX(bounce, volume: 0.5f);
         }
     }
 }

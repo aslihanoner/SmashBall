@@ -5,53 +5,38 @@ using UnityEngine;
 public class Sound : MonoBehaviour
 {
 
-    public static Sound instance;
-    private AudioSource audioSource;
-    public bool sound;
+    public static Sound Instance;
+    private AudioSource _audioSource;
+    public bool isSoundEnabled = true;
 
     private void Awake()
     {
         makeSingleton();
-        audioSource = GetComponent<AudioSource>();
+        _audioSource = GetComponent<AudioSource>();
     }
-    void Start()
-    {
-        
-    }
-
     private void makeSingleton()
     {
-        if (instance != null)
+        if (Instance != null)
         {
             Destroy(gameObject);
         }
         else
         {
-            instance = this;
+            Instance = this;
             DontDestroyOnLoad(this);
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ToggleSound()
     {
-        
-    }
-    public void SoundOnOff()
-    {
-        sound = !sound;
+        isSoundEnabled = !isSoundEnabled;
     }
 
-    public void playSoundFX(AudioClip clip, float volume)
+    public void PlaySoundFX(AudioClip clip, float volume)
     {
-        if (sound)
+        if (isSoundEnabled)
         {
-            audioSource.PlayOneShot(clip, volume);
-
+            _audioSource.PlayOneShot(clip, volume);
         }
     }
-
-
-
-
 }

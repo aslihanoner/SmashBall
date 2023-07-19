@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.5748172, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -380,7 +380,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 412814699}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 23.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -389,7 +389,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 179.4068, y: 125.21582}
+  m_AnchoredPosition: {x: 364.5, y: 567}
   m_SizeDelta: {x: 358.8137, y: 300.4315}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &412814701
@@ -1452,7 +1452,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.16140087, g: 0.78485954, b: 0.8773585, a: 1}
+  m_Color: {r: 0.8962264, g: 0.13950695, b: 0.13950695, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1464,7 +1464,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 0.089
+  m_FillAmount: 0.043
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -1595,7 +1595,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4e1dfa072ffa664ea6a3741772c2e18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sound: 0
+  isSoundEnabled: 0
 --- !u!4 &1074948131
 Transform:
   m_ObjectHideFlags: 0
@@ -1817,7 +1817,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -196.22, y: 566}
+  m_AnchoredPosition: {x: -264, y: 566}
   m_SizeDelta: {x: 392.44, y: 152.8014}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1438036584
@@ -1851,8 +1851,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4292034045
-  m_fontColor: {r: 0.990566, g: 0.23829652, b: 0.8280603, a: 1}
+    rgba: 4293335867
+  m_fontColor: {r: 0.23150805, g: 0.10679956, b: 0.9056604, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1948,10 +1948,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54095bf61212343498fff41a0701a30f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelSlider: {fileID: 986792179}
-  currentLevelImage: {fileID: 1081919779}
-  nextLevelImage: {fileID: 1843231899}
-  playerMaterial: {fileID: 2100000, guid: f2b29b366d947264386d6843fb283c70, type: 2}
+  LevelSlider: {fileID: 986792179}
+  CurrentLevelImage: {fileID: 1081919779}
+  NextLevelImage: {fileID: 1843231899}
+  PlayerMaterial: {fileID: 2100000, guid: f2b29b366d947264386d6843fb283c70, type: 2}
 --- !u!4 &1573812052
 Transform:
   m_ObjectHideFlags: 0
@@ -2002,7 +2002,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0.0000076293945, y: -196.41357}
+  m_AnchoredPosition: {x: 40, y: -194.8}
   m_SizeDelta: {x: 392.4422, y: 40.4239}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1581965279
@@ -2208,16 +2208,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53464e9bb3985d14e9bfe076ff7e3876, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 0}
+  Rb: {fileID: 0}
   win: {fileID: 8300000, guid: 217cd410471f42a45a6d16a1880c4913, type: 3}
   death: {fileID: 8300000, guid: 1124915e210fd1d47b454812d12fa909, type: 3}
-  invictibledestroy: {fileID: 8300000, guid: 6bb9e5dafd92ac049b2c780beeb662ca, type: 3}
+  invincibleDestroy: {fileID: 0}
   destroy: {fileID: 8300000, guid: ba8c52d213c7bb84cb82c54aeb06d78c, type: 3}
   bounce: {fileID: 8300000, guid: 12af9d4dd8824d546970d054aac7ac89, type: 3}
-  currentObstacleNum: 0
-  totalObstacleNum: 0
-  InvictableSlider: {fileID: 1674799859}
-  InvictableObject: {fileID: 283491179}
+  CurrentObstacleNum: 0
+  TotalObstacleNum: 0
+  InvincibleSlider: {fileID: 0}
+  InvincibleObject: {fileID: 0}
   GameOverUI: {fileID: 465223478}
   FinishUI: {fileID: 1637380205}
   playerState: 0
@@ -2402,7 +2402,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -2}
   m_SizeDelta: {x: 190.54, y: 187.2388}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1674799859
@@ -2430,7 +2430,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
-  m_FillAmount: 0.132
+  m_FillAmount: 0.058
   m_FillClockwise: 1
   m_FillOrigin: 2
   m_UseSpriteMesh: 0
@@ -2478,7 +2478,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -196.2211, y: 759}
+  m_AnchoredPosition: {x: -264.8, y: 665.2}
   m_SizeDelta: {x: 392.4422, y: 188.4034}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1773666516
@@ -2685,7 +2685,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8ce347195d00cf4db22154e78bb066e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 100
+  Speed: 100
 --- !u!4 &1897077037
 Transform:
   m_ObjectHideFlags: 0

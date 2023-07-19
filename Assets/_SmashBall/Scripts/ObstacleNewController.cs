@@ -6,7 +6,7 @@ using UnityEngine;
 public class ObstacleNewController : MonoBehaviour
 {
     [SerializeField]
-    private ObstacleNew[] obstacles = null;
+    private ObstacleNew[] _obstacles = null;
     public void ShatterAnimationAllObstacles()
     {
         if (transform.parent != null)
@@ -15,7 +15,7 @@ public class ObstacleNewController : MonoBehaviour
 
         }
         
-        foreach (ObstacleNew item in obstacles)
+        foreach (ObstacleNew item in _obstacles)
         {
             item.ShatterAnimation();
         }
@@ -27,16 +27,5 @@ public class ObstacleNewController : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
         Destroy(gameObject);
-    }
-
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

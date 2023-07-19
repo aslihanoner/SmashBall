@@ -6,29 +6,29 @@ using Random = UnityEngine.Random;
 
 public class FollowCamera : MonoBehaviour
 {
-    private Vector3 cameraPos;
-    private Transform player, win;
+    private Transform _player, _win;
+    private float _cameraOffset = 4f;
+    private bool _isShaking = false;
 
-    private float cameraOffset = 4f;
-
-    
-
-    public delegate void CameraShakeEventHandler(float duration, float magnitude);
-    public static event CameraShakeEventHandler CameraShakeEvent;
-
-    private void ShakeCamera(float duration, float magnitude)
+    private void OnEnable()
     {
-        
-        CameraShakeEvent?.Invoke(duration, magnitude);
+        PlayerController.CameraShakeEvent += HandleCameraShake;
+    }
+
+    private void OnDisable()
+    {
+        PlayerController.CameraShakeEvent -= HandleCameraShake;
     }
 
     private void HandleCameraShake(float duration, float magnitude)
     {
-        StartCoroutine(Shake(duration, magnitude));
+        if (!_isShaking)
+            StartCoroutine(Shake(duration, magnitude));
     }
 
     private IEnumerator Shake(float duration, float magnitude)
     {
+        _isShaking = true;
         Vector3 originalPosition = transform.position;
         float elapsed = 0f;
 
@@ -45,45 +45,26 @@ public class FollowCamera : MonoBehaviour
         }
 
         transform.position = originalPosition;
-    }
-
-    private void OnEnable()
-    {
-        CameraShakeEvent += HandleCameraShake;
-    }
-
-    private void OnDisable()
-    {
-        CameraShakeEvent -= HandleCameraShake;
+        _isShaking = false;
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (transform.position.y > _player.position.y && transform.position.y > _win.position.y + _cameraOffset)
         {
-            ShakeCamera(0.5f, 0.2f);
-        }
-
-        if (transform.position.y > player.position.y && transform.position.y > win.position.y + cameraOffset)
-        {
-            cameraPos = new Vector3(transform.position.x, player.position.y, transform.position.z);
+            Vector3 cameraPos = new Vector3(transform.position.x, _player.position.y, transform.position.z);
             transform.position = new Vector3(transform.position.x, cameraPos.y, -10);
         }
     }
 
-
-
-
     private void Awake()
     {
-        player = FindObjectOfType<PlayerController>().transform;
+        _player = FindObjectOfType<PlayerController>().transform;
         LevelRotation.OnWinInstantiated += LevelRotation_OnWinInstantiated;
     }
 
     private void LevelRotation_OnWinInstantiated(GameObject obj)
     {
-        win = obj.transform;
+        _win = obj.transform;
     }
-
-    
 }
