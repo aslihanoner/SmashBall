@@ -42,13 +42,14 @@ public class PlayerController : MonoBehaviour
         {
             _hit = Input.GetMouseButton(0);
 
-            if (_invincible) _currentTime -= Time.deltaTime * 0.4f;
+            if (_invincible) { _currentTime -= Time.deltaTime * 0.4f; }
             else
+            {
                 _currentTime += _hit ? Time.deltaTime * 0.8f : -Time.deltaTime * 0.5f;
 
-            _currentTime = Mathf.Clamp01(_currentTime);
-            InvincibleObject.SetActive(_currentTime >= 0.15f || InvincibleSlider.color == Color.red);
-
+                _currentTime = Mathf.Clamp01(_currentTime);
+                InvincibleObject.SetActive(_currentTime >= 0.15f || InvincibleSlider.color == Color.red);
+            }
             if (_currentTime >= 1)
             {
                 _currentTime = 1;
@@ -103,10 +104,12 @@ public class PlayerController : MonoBehaviour
                 ShatterObstacle();
                 Sound.Instance.PlaySoundFX(_invincible ? invincibleDestroy : destroy, volume: 0.5f);
                 CurrentObstacleNum++;
+             
             }
             else if (collision.gameObject.tag == "plane")
             {
-                Debug.Log("GameOver");
+                Rb.isKinematic = true;
+                transform.GetChild(0).gameObject.SetActive(false);
                 GameOverUI.SetActive(true);
                 playerState = PlayerState.Finish;
                 gameObject.GetComponent<Rigidbody>().isKinematic = true;
