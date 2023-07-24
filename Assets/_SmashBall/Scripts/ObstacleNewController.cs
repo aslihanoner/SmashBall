@@ -7,6 +7,7 @@ public class ObstacleNewController : MonoBehaviour
 {
     [SerializeField]
     private ObstacleNew[] _obstacles = null;
+    public bool isBroken = false;
     public void ShatterAnimationAllObstacles()
     {
         if (transform.parent != null)
@@ -17,7 +18,10 @@ public class ObstacleNewController : MonoBehaviour
         
         foreach (ObstacleNew item in _obstacles)
         {
-            item.ShatterAnimation();
+            if (!ObstacleNew.isBroken)
+            { 
+                item.ShatterAnimation(); 
+            } 
         }
 
         StartCoroutine(RemoveAllShatterAnimation());

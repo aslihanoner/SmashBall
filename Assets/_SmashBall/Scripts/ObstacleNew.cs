@@ -8,6 +8,7 @@ public class ObstacleNew : MonoBehaviour
     private MeshRenderer _meshRenderer;
     private Collider _collider;
     private ObstacleNewController _ObstacleNewController;
+    public static bool isBroken = false;
 
     private void Awake()
     {
@@ -32,6 +33,7 @@ public class ObstacleNew : MonoBehaviour
         _rigidbody.isKinematic = false;
         _collider.enabled = false;
 
+
         Vector3 forcePoint = transform.parent.position;
         float parentX = transform.parent.position.x;
         float xPosition = _meshRenderer.bounds.center.x;
@@ -46,6 +48,8 @@ public class ObstacleNew : MonoBehaviour
         _rigidbody.AddForceAtPosition(direction * force, forcePoint, ForceMode.Impulse);
         _rigidbody.AddTorque(Vector3.left * torque);
         _rigidbody.velocity = Vector3.down;
+
+        isBroken = true;
 
     }
 }

@@ -38,8 +38,23 @@ public class GameUI : MonoBehaviour
         LevelSlider.fillAmount = fillAmount;
     }
 
-   void Update()
-   {
-    
-   }
+    public void ShowFinishUI(int levelNumber, int completedLevels)
+    {
+        FinishUI.SetActive(true);
+        GameOverUI.SetActive(false);
+
+        leveltxt.text = "Level " + levelNumber;
+        completedtxt.text = "Completed Levels: " + completedLevels;
+        LevelText.text = "Level " + levelNumber;
+    }
+
+    public void ShowGameOverUI(int score)
+    {
+        FinishUI.SetActive(false);
+        GameOverUI.SetActive(true);
+
+        scorenumbertxt.text = score.ToString();
+
+    }
+
 }
