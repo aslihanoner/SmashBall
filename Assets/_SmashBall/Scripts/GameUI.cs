@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class GameUI : MonoBehaviour
@@ -31,6 +32,33 @@ public class GameUI : MonoBehaviour
         LevelSlider.color = PlayerMaterial.color;
         CurrentLevelImage.color = PlayerMaterial.color;
         NextLevelImage.color = PlayerMaterial.color;
+    }
+
+    void Update()
+    {
+        if(Input.GetMouseButtonDown(0) && player.playerState == PlayerController.PlayerState.Prepare)
+        {
+            player.playerState = PlayerController.PlayerState.Playing;
+
+        }
+    }
+
+    private bool IgnoreUI()
+    {
+        PointerEventData pointerEventData = new PointerEventData(EventSystem.current);
+        pointerEventData.position = Input.mousePosition;
+        List<RaycastResult> raycastResults = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(pointerEventData, raycastResults);
+
+        for(int i=0; i < raycastResults.Count; i++)
+        {
+            if (raycastResults[i].gameObject.GetComponent<IgnoreGameUI>() != null)
+            {
+                raycastResults.RemoveAt(i);
+                i--;
+            }
+        }
+        return raycastResults.Count > 0;
     }
 
     public void LevelSliderFill(float fillAmount)
