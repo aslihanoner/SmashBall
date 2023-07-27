@@ -7,26 +7,16 @@ public class ObstacleNew : MonoBehaviour
     private Rigidbody _rigidbody;
     private MeshRenderer _meshRenderer;
     private Collider _collider;
-    private ObstacleNewController _ObstacleNewController;
-    public static bool isBroken = false;
+    private ObstacleNewController _obstacleNewController;
 
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
         _meshRenderer = GetComponent<MeshRenderer>();
         _collider = GetComponent<Collider>();
-        _ObstacleNewController = transform.parent.GetComponent<ObstacleNewController>();
-    }
-    void Start()
-    {
-        
+        _obstacleNewController = transform.parent.GetComponent<ObstacleNewController>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void ShatterAnimation()
     {
@@ -49,7 +39,6 @@ public class ObstacleNew : MonoBehaviour
         _rigidbody.AddTorque(Vector3.left * torque);
         _rigidbody.velocity = Vector3.down;
 
-        isBroken = true;
 
     }
 }

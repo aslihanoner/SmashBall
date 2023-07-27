@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class GameUI : MonoBehaviour
 {
+    public static GameUI Instance;
+
     public GameObject FinishUI, GameOverUI;
     public Image LevelSlider;
     public Image CurrentLevelImage;
@@ -22,6 +24,10 @@ public class GameUI : MonoBehaviour
     public Text gameovertxt;
     public Text scoretxt;
     public Text scorenumbertxt;
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     void Start()
     {

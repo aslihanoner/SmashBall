@@ -132,21 +132,30 @@ public class PlayerController : MonoBehaviour
             {
                 Rb.velocity = new Vector3(0, 50 * Time.deltaTime * 5, 0); 
             }
-
-            ObstacleNewController obstacleNewController = collision.gameObject.GetComponent<ObstacleNewController>();
-
-            if (!_hit || _invincible) 
+            if (collision.gameObject.CompareTag("Finish"))
             {
-                if (collision.gameObject.CompareTag("enemy") && obstacleNewController != null)
+                playerState = PlayerState.Finish;
+                _soundManager.PlaySoundFX(win, volume: 0.5f);
+                FinishUI.SetActive(true);
+                FinishUI.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Level " + PlayerPrefs.GetInt("Level", 1);
+                return;
+
+            }
+
+            ObstacleNewController obstacleNewController = collision.gameObject.GetComponentInParent<ObstacleNewController>();
+
+            if (_hit) 
+            {
+                if (collision.gameObject.CompareTag("enemy"))
                 {
-                    collision.transform.parent.GetComponent<ObstacleNewController>().ShatterAnimationAllObstacles();
+                    obstacleNewController.ShatterAnimationAllObstacles();
                     ShatterObstacle(obstacleNewController);
                     _soundManager.PlaySoundFX(_invincible ? invincibleDestroy : destroy, volume: 0.5f);
                     CurrentObstacleNum++;
                 }
-                else if (collision.gameObject.CompareTag("plane") && obstacleNewController != null && !collision.gameObject.GetComponent<ObstacleNewController>().isBroken)
+                else if (collision.gameObject.CompareTag("plane") && _invincible)
                 {
-                    collision.gameObject.GetComponent<ObstacleNewController>().ShatterAnimationAllObstacles();
+                    obstacleNewController.ShatterAnimationAllObstacles();
                     ShatterObstacle(obstacleNewController);
                     GameOverUI.SetActive(true);
                     playerState = PlayerState.Finish;
@@ -156,22 +165,16 @@ public class PlayerController : MonoBehaviour
                 }
             }
 
-            FindObjectOfType<GameUI>().LevelSliderFill(CurrentObstacleNum / (float)TotalObstacleNum);
+            GameUI.Instance.LevelSliderFill(CurrentObstacleNum / (float)TotalObstacleNum);
 
-            if (collision.gameObject.CompareTag("Finish"))
-            {
-                playerState = PlayerState.Finish;
-                _soundManager.PlaySoundFX(win, volume: 0.5f);
-                FinishUI.SetActive(true);
-                FinishUI.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Level " + PlayerPrefs.GetInt("Level", 1);
-            }
+            
         }
     }
 
 
     private void OnCollisionStay(Collision collision)
     {
-        if (!_hit || collision.gameObject.tag == "Finish")
+        if (!_hit || collision.gameObject.CompareTag("Finish"))
         {
             Rb.velocity = new Vector3(0, 50 * Time.deltaTime * 5, 0);
             _soundManager.PlaySoundFX(bounce, volume: 0.5f);
