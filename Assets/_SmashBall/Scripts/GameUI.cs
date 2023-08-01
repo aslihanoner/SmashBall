@@ -15,6 +15,8 @@ public class GameUI : MonoBehaviour
     public Material PlayerMaterial;
     public PlayerController player;
 
+    public Text ScoreText;
+
     [Header("Finish")]
     public Text leveltxt;
     public Text completedtxt;
@@ -45,7 +47,6 @@ public class GameUI : MonoBehaviour
         if(Input.GetMouseButtonDown(0) && player.playerState == PlayerController.PlayerState.Prepare)
         {
             player.playerState = PlayerController.PlayerState.Playing;
-
         }
     }
 

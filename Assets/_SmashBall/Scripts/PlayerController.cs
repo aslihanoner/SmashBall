@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
     public static event CameraShakeEventHandler CameraShakeEvent;
     
 
+
     public enum PlayerState{Prepare, Playing, Died, Finish}
     [HideInInspector] public PlayerState playerState = PlayerState.Prepare;
 
@@ -53,7 +54,7 @@ public class PlayerController : MonoBehaviour
                 if (InvincibleSlider != null)
                 {
                     InvincibleSlider.fillAmount = _currentTime;
-                    InvincibleObject.SetActive(_currentTime >= 0.15f || InvincibleSlider.color == Color.red);
+                    InvincibleObject.SetActive(_currentTime >= 0.4f || InvincibleSlider.color == Color.red);
                 }
 
             }

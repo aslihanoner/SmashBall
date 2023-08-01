@@ -15,7 +15,7 @@ public class Score : MonoBehaviour
     private void Awake()
     {
         MakeSingleton();
-
+        _scoreTxt = GetComponent<TextMeshProUGUI>();
     }
 
     private void MakeSingleton()
@@ -35,9 +35,6 @@ public class Score : MonoBehaviour
     {
         AddScore(0);
     }
-
-    
-    
 
     public void AddScore(int value)
     {
