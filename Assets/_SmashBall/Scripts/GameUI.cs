@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -8,6 +9,8 @@ public class GameUI : MonoBehaviour
 {
     public static GameUI Instance;
 
+
+
     public GameObject FinishUI, GameOverUI;
     public Image LevelSlider;
     public Image CurrentLevelImage;
@@ -15,17 +18,17 @@ public class GameUI : MonoBehaviour
     public Material PlayerMaterial;
     public PlayerController player;
 
-    public Text ScoreText;
+    public TextMeshProUGUI ScoreText;
 
     [Header("Finish")]
-    public Text leveltxt;
-    public Text completedtxt;
-    public Text LevelText;
+    public TextMeshProUGUI leveltxt;
+    public TextMeshProUGUI   completedtxt;
+    public TextMeshProUGUI LevelText;
 
     [Header("GameOver")]
-    public Text gameovertxt;
-    public Text scoretxt;
-    public Text scorenumbertxt;
+    public TextMeshProUGUI gameovertxt;
+    public TextMeshProUGUI scoretxt;
+    public TextMeshProUGUI scorenumbertxt;
     private void Awake()
     {
         Instance = this;
@@ -42,6 +45,10 @@ public class GameUI : MonoBehaviour
         NextLevelImage.color = PlayerMaterial.color;
     }
 
+    private void OnEnable()
+    {
+        
+    }
     void Update()
     {
         if(Input.GetMouseButtonDown(0) && player.playerState == PlayerController.PlayerState.Prepare)
@@ -89,7 +96,7 @@ public class GameUI : MonoBehaviour
         GameOverUI.SetActive(true);
 
         scorenumbertxt.text = score.ToString();
-
+        
     }
 
 }

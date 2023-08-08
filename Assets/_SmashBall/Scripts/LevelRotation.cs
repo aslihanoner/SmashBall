@@ -10,7 +10,7 @@ public class LevelRotation : MonoBehaviour
     [SerializeField] Transform _cylinderPivot;
 
     [SerializeField] GameObject[] _obstacleModel;
-    [SerializeField] GameObject[] _obstaclePrefab = new GameObject[4];
+    GameObject[] _obstaclePrefab = new GameObject[4];
     [SerializeField] GameObject _winPrefab;
 
 
@@ -25,7 +25,7 @@ public class LevelRotation : MonoBehaviour
     void Awake()
     {
         _level = PlayerPrefs.GetInt("level", 1);
-
+        RandomObstacleGenerator();
         ObstacleGenerator();
         SetFinishLinePosition();
     }
@@ -43,7 +43,7 @@ public class LevelRotation : MonoBehaviour
     private void ObstacleGenerator()
     {
         GameObject _obstacle = default;
-
+        
         RandomObstacleGenerator();
         float randomNumber = Random.value;
         for (_obstacleNumber = 0; _obstacleNumber > -_level - _addNumber; _obstacleNumber -= 0.5f)
@@ -63,25 +63,30 @@ public class LevelRotation : MonoBehaviour
                 _obstacle = Instantiate(_obstaclePrefab[Random.Range(2, 4)]);
             }
 
-            _obstacle.transform.position = new Vector3(0, _obstacleNumber - 0.01f, 0);
-            _obstacle.transform.eulerAngles = new Vector3(0, _obstacleNumber * 8, 0);
 
-            if (Mathf.Abs(_obstacleNumber) >= _level * .3f && Mathf.Abs(_obstacleNumber) <= _level * .6f)
+            if(_obstacle != null)
             {
+                _obstacle.transform.position = new Vector3(0, _obstacleNumber - 0.01f, 0);
                 _obstacle.transform.eulerAngles = new Vector3(0, _obstacleNumber * 8, 0);
-                _obstacle.transform.eulerAngles += Vector3.up * 180;
-            }
-            else if (Mathf.Abs(_obstacleNumber) > _level * .8f)
-            {
-                _obstacle.transform.eulerAngles = new Vector3(0, _obstacleNumber * 8, 0);
-                if (randomNumber > .82f)
+
+                if (Mathf.Abs(_obstacleNumber) >= _level * .3f && Mathf.Abs(_obstacleNumber) <= _level * .6f)
                 {
+                    _obstacle.transform.eulerAngles = new Vector3(0, _obstacleNumber * 8, 0);
                     _obstacle.transform.eulerAngles += Vector3.up * 180;
                 }
+                else if (Mathf.Abs(_obstacleNumber) > _level * .8f)
+                {
+                    _obstacle.transform.eulerAngles = new Vector3(0, _obstacleNumber * 8, 0);
+                    if (randomNumber > .82f)
+                    {
+                        _obstacle.transform.eulerAngles += Vector3.up * 180;
+                    }
 
+                }
+
+                _obstacle.transform.parent = FindObjectOfType<RotateControl>().transform;
             }
-
-            _obstacle.transform.parent = FindObjectOfType<RotateControl>().transform;
+            
 
         }
 

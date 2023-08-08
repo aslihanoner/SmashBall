@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI;
 
 public class Score : MonoBehaviour
 {
@@ -16,6 +17,19 @@ public class Score : MonoBehaviour
     {
         MakeSingleton();
         _scoreTxt = GetComponent<TextMeshProUGUI>();
+        PlayerController.OnScore += UpdateText;
+    }
+
+    private void UpdateText()
+    {
+        
+        if (_score > PlayerPrefs.GetInt(" HighScore", 0))
+        {
+            PlayerPrefs.SetInt("HighScore", _score);
+        }
+
+        _scoreTxt.text = PlayerController.CurrentObstacleNum.ToString();
+        Debug.Log("Score --> " + _score);
     }
 
     private void MakeSingleton()
@@ -31,23 +45,7 @@ public class Score : MonoBehaviour
         }
     }
 
-    void Start()
-    {
-        AddScore(0);
-    }
-
-    public void AddScore(int value)
-    {
-        _score += value;
-        if(_score > PlayerPrefs.GetInt(" HighScore",0))
-        {
-            PlayerPrefs.SetInt("HighScore", _score);
-        }
-
-        _scoreTxt.text = _score.ToString();
-        Debug.Log("Score --> " + _score);
-    }
-
+   
     public void RemoveScore()
     {
         _score = 0;

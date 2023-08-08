@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -12,7 +13,7 @@ public class PlayerController : MonoBehaviour
     bool _invincible;
     private Sound _soundManager;
     [SerializeField] AudioClip win, death, invincibleDestroy, destroy, bounce;
-    public int CurrentObstacleNum;
+    private static int _currentObstacleNum;
     public int TotalObstacleNum;
     public Image InvincibleSlider;
     public GameObject InvincibleObject;
@@ -20,11 +21,14 @@ public class PlayerController : MonoBehaviour
     public GameObject FinishUI;
     public delegate void CameraShakeEventHandler(float duration, float magnitude);
     public static event CameraShakeEventHandler CameraShakeEvent;
-    
+    public static event Action OnScore;
+
 
 
     public enum PlayerState{Prepare, Playing, Died, Finish}
     [HideInInspector] public PlayerState playerState = PlayerState.Prepare;
+
+    public static int CurrentObstacleNum { get => _currentObstacleNum; set { _currentObstacleNum = value; OnScore?.Invoke(); }  } 
 
     void Start()
     {
@@ -99,12 +103,13 @@ public class PlayerController : MonoBehaviour
     {
         if (obstacleController != null && !obstacleController.isBroken)
         {
-            Score._instance.AddScore(_invincible ? 1 : 2);
+           
             CameraShakeEvent?.Invoke(0.2f, 0.1f);
             _soundManager = FindObjectOfType<Sound>();
             obstacleController.ShatterAnimationAllObstacles();
             _soundManager.PlaySoundFX(_invincible ? invincibleDestroy : destroy, volume: 0.5f);
             CurrentObstacleNum++;
+            OnScore.Invoke();
         }
     }
 
@@ -167,8 +172,6 @@ public class PlayerController : MonoBehaviour
             }
 
             GameUI.Instance.LevelSliderFill(CurrentObstacleNum / (float)TotalObstacleNum);
-
-            
         }
     }
 

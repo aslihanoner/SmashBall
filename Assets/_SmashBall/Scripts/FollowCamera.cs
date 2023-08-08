@@ -50,10 +50,13 @@ public class FollowCamera : MonoBehaviour
 
     private void Update()
     {
-        if (transform.position.y > _player.position.y && transform.position.y > _win.position.y + _cameraOffset)
+        if (_player != null && _win != null) 
         {
-            Vector3 cameraPos = new Vector3(transform.position.x, _player.position.y, transform.position.z);
-            transform.position = new Vector3(transform.position.x, cameraPos.y, -10);
+            if (transform.position.y > _player.position.y && transform.position.y > _win.position.y + _cameraOffset)
+            {
+                Vector3 cameraPos = new Vector3(transform.position.x, _player.position.y, transform.position.z);
+                transform.position = new Vector3(transform.position.x, cameraPos.y, -10);
+            }
         }
     }
 
